@@ -19,19 +19,20 @@ mysql::db { 'mysql-server':
 
 include 'maven'
 
-exec { untar-mule:
-	command => "tar xvzf /vagrant/puppet/resources/mule-standalone-3.5.0.tar.gz && ln -s /opt/mule-standalone-3.5.0 /opt/mule",
+exec { 'untarmule':
+	command => "tar xvzf /vagrant/puppet/resources/mule-standalone-3.5.0.tar.gz && rm -rf /opt/mule-standalone-3.5.0/apps && ln -fs /vagrant/mule/apps /opt/mule-standalone-3.5.0/apps  && ln -fs /opt/mule-standalone-3.5.0 /opt/mule",
 	cwd => "/opt",
 	environment => 'MULE_HOME=/opt/mule',
 	creates => "/opt/mule-standalone-3.5.0"
 }
 
-service { "mule":
+service { 'mule':
 	ensure => running,
 	start => "/opt/mule/bin/mule -M-Dmule.mmc.bind.port=7773 -Wwrapper.daemonize=TRUE",
 	stop => "/opt/mule/bin/mule stop",
 	status => "/opt/mule/bin/mule status",
-	pattern => "/opt/mule/bin/mule -M-Dmule.mmc.bind.port=7773 -Wwrapper.daemonize=TRUE"
+	pattern => "/opt/mule/bin/mule -M-Dmule.mmc.bind.port=7773 -Wwrapper.daemonize=TRUE",
+	require => [Exec['untarmule'], Class['java'], Class['maven']]
 }
 
 package { 'api-umbrella':

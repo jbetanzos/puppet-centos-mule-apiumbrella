@@ -35,10 +35,9 @@ Vagrant.configure(2) do |config|
   config.nfs.map_uid = 0
   config.nfs.map_gid = 0
 
-  config.vm.synced_folder "mule/apps", "/opt/mule/apps", owener: "root", group: "root"
-
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
+  # config.vm.synced_folder "mule/apps", "/vagrant/mule/apps", owener: "root", group: "root"
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
