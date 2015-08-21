@@ -59,7 +59,7 @@ Make sure this lines are uncommented (drop #), exit your box and retart your box
 After your box restarted, in your host machine open a browser and enter to `https://33.33.33.93/admin`. Notice that since this is a local installation you will be able to log into API Umbrella using Persona, using a FireFox browser. Use the same email address you update in the `api-umbrella.yml`
 
 ### Monitor an API
-Login into API Umbrella for this configuration use https://33.33.33.93/admin.
+Login into API Umbrella for this configuration use `https://33.33.33.93/admin`
 
 Go to *Configuration > API Backends*, and apply the following configuration:
 ```
@@ -117,4 +117,4 @@ puppet module install maestrodev-maven
 #https://forge.puppetlabs.com/puppetlabs/firewall
 puppet module install puppetlabs-firewall
 ```
-You can find this installation in [shell/init.sh]()
+You can find this installation in [puppet/shell/init.sh](https://raw.githubusercontent.com/jbetanzos/puppet-centos-mule-apiumbrella/master/puppet/shell/init.sh)
