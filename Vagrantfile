@@ -30,7 +30,7 @@ Vagrant.configure(2) do |config|
   # config.vm.network "forwarded_port", guest: 443, host: 8101
   config.vm.network "private_network", ip: "33.33.33.93"
   config.vm.network "forwarded_port", guest: 3306, host: 3307
-  config.vm.network "forwarded_port", guest: 7773, host: 7773
+  config.vm.network "forwarded_port", guest: 8083, host: 8083
   
   config.nfs.map_uid = 0
   config.nfs.map_gid = 0
@@ -59,7 +59,7 @@ Vagrant.configure(2) do |config|
   #   vb.gui = true
   #
   #   # Customize the amount of memory on the VM:
-      vb.memory = "2400"
+      vb.memory = "3000"
   end
   
   #

@@ -1,8 +1,8 @@
 Exec { path => "/bin:/usr/bin", }
 
 class { 'java':
-	package               => 'java-1.7.0-openjdk-devel',
-	java_alternative      => 'jre-1.7.0-openjdk'
+	package               => 'java-1.8.0-openjdk-devel',
+	java_alternative      => 'jre-1.8.0-openjdk'
 }
 
 class { 'mysql::server':
@@ -28,9 +28,10 @@ exec { 'untarmule':
 
 service { 'mule':
 	ensure => running,
+	provider => base,
 	start => "/opt/mule/bin/mule -M-Dmule.mmc.bind.port=7773 -Wwrapper.daemonize=TRUE",
 	stop => "/opt/mule/bin/mule stop",
-	status => "/opt/mule/bin/mule status",
+	status => 'if [[ $(/opt/mule/bin/mule status) == *"not running"* ]]; then echo 1; else echo 0; fi',
 	pattern => "/opt/mule/bin/mule -M-Dmule.mmc.bind.port=7773 -Wwrapper.daemonize=TRUE",
 	require => [Exec['untarmule'], Class['java'], Class['maven']]
 }
@@ -71,19 +72,19 @@ firewall { '443 lyris rule':
   dport   => 443,
 }
 
-# Mule CE 3.5 Port
-firewall { '7773 forward to MULE_CHAIN':
+# Application Mule CE 3.5 Port
+firewall { '8083 forward to MULE_CHAIN':
   chain   => 'INPUT',
-  jump    => 'LYRIS7773_CHAIN',
+  jump    => 'LYRIS8083_CHAIN',
 }
-firewallchain { 'LYRIS7773_CHAIN:filter:IPv4':
+firewallchain { 'LYRIS8083_CHAIN:filter:IPv4':
   ensure  => present,
 }
-firewall { '7773 lyris rule':
-  chain   => 'LYRIS7773_CHAIN',
+firewall { '8083 lyris rule':
+  chain   => 'LYRIS8083_CHAIN',
   action  => 'accept',
   proto   => 'tcp',
-  dport   => 7773,
+  dport   => 8083,
 }
 
 # MySQL Server Port

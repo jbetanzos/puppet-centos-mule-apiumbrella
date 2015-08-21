@@ -21,5 +21,5 @@ fi
 if [ ! -f /etc/default/locale ]; then
 	sudo echo "LANG=en_US.UTF-8" >> /etc/default/locale
 	sudo echo "LANGUAGE=en_US" >> /etc/default/locale
-	sudo echo "LC_ALL=en_US.UTF-8" >> /etc/default/locale
+	sudo echo "LC_ALL=C" >> /etc/default/locale
 fi
