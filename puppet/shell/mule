@@ -1,0 +1,61 @@
+#! /bin/sh
+# /etc/init.d/mule
+
+NAME=mule
+LOCKFILE=/var/lock/$NAME
+if [ -d /var/lock/subsys ]; then
+  LOCKFILE=/var/lock/subsys/$NAME
+fi
+
+start() {
+  /opt/mule/bin/mule -M-Dmule.mmc.bind.port=7773 -Wwrapper.daemonize=TRUE start
+  RETVAL=$?
+  [ $RETVAL -eq 0 ] && touch $LOCKFILE
+  return $RETVAL
+}
+
+stop() {
+  /opt/mule/bin/mule stop
+  RETVAL=$?
+  [ $RETVAL -eq 0 ] && rm -f $LOCKFILE
+  return $RETVAL
+}
+
+restart() {
+  /opt/mule/bin/mule stop
+  /opt/mule/bin/mule -M-Dmule.mmc.bind.port=7773 -Wwrapper.daemonize=TRUE start
+  RETVAL=$?
+  return $RETVAL
+}
+
+status() {
+  /opt/mule/bin/mule status
+  RETVAL=$?
+  if [[ $? == *"not running"* ]]; then 
+	  return 1; 
+  fi
+  return 0
+}
+
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  status)
+    status
+    ;;
+  restart)
+    restart
+    ;;
+  condrestart)
+    [ -f $LOCKFILE ] && restart || :
+    ;;
+  *)
+    echo "Usage: $NAME {start|stop|status|restart|condrestart}"
+    exit 1
+    ;;
+esac
+exit $?

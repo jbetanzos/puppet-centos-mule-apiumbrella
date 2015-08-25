@@ -1,33 +1,39 @@
 Exec { path => "/bin:/usr/bin", }
 
 class { 'java':
-	package               => 'java-1.8.0-openjdk-devel',
-	java_alternative      => 'jre-1.8.0-openjdk'
+	package               => 'java-1.7.0-openjdk-devel',
+	java_alternative      => 'jre-1.7.0-openjdk'
 }
 
-class { 'mysql::server':
+class { '::mysql::server':
 	root_password => 'betanzos'
 }
 
-mysql::db { 'mysql-server':
-	user => 'lyris',
-	password => 'lyris',
-	host => 'localhost',
-	grant => ['ALL'],
-	sql => '/vagrant/puppet/resources/Company20150731.sql'
-}
+#mysql::db { 'mysql-server':
+#	user => 'lyris',
+#	password => 'lyris',
+#	host => 'localhost',
+#	grant => ['ALL'],
+#	sql => '/vagrant/puppet/resources/Company20150731.sql'
+#}
 
 include 'maven'
 
 exec { 'untarmule':
-	command => "tar xvzf /vagrant/puppet/resources/mule-standalone-3.5.0.tar.gz && rm -rf /opt/mule-standalone-3.5.0/apps && ln -fs /vagrant/mule/apps /opt/mule-standalone-3.5.0/apps  && ln -fs /opt/mule-standalone-3.5.0 /opt/mule",
+	command => "tar xvzf /vagrant/puppet/resources/mule-standalone-3.5.0.tar.gz && rm -rf /opt/mule-standalone-3.5.0/apps && ln -fs /vagrant/mule/apps /opt/mule-standalone-3.5.0/apps  && ln -fs /opt/mule-standalone-3.5.0 /opt/mule && cp /vagrant/puppet/shell/mule /etc/init.d/ && chmod a+x /etc/init.d/mule",
 	cwd => "/opt",
 	environment => 'MULE_HOME=/opt/mule',
 	creates => "/opt/mule-standalone-3.5.0"
 }
 
+exec { 'apiumbrella-userconf':
+	command => "cp --force /vagrant/puppet/config/api-umbrella.yml /etc/api-umbrella/ && /etc/init.d/api-umbrella start",
+	require => Package['install-apiumbrella']
+}
+
 service { 'mule':
 	ensure => running,
+	enable => true,
 	provider => base,
 	start => "/opt/mule/bin/mule -M-Dmule.mmc.bind.port=7773 -Wwrapper.daemonize=TRUE",
 	stop => "/opt/mule/bin/mule stop",
@@ -36,7 +42,13 @@ service { 'mule':
 	require => [Exec['untarmule'], Class['java'], Class['maven']]
 }
 
-package { 'api-umbrella':
+service { 'api-umbrella':
+	ensure => running,
+	enable => true,
+	require => Exec['apiumbrella-userconf']
+}
+
+package { 'install-apiumbrella':
 	ensure => installed,
 	provider => 'rpm', 
 	source => '/vagrant/puppet/resources/api-umbrella-0.8.0-1.el6.x86_64.rpm'
@@ -73,18 +85,18 @@ firewall { '443 lyris rule':
 }
 
 # Application Mule CE 3.5 Port
-firewall { '8083 forward to MULE_CHAIN':
+firewall { '8081 forward to MULE_CHAIN':
   chain   => 'INPUT',
-  jump    => 'LYRIS8083_CHAIN',
+  jump    => 'LYRIS8081_CHAIN',
 }
-firewallchain { 'LYRIS8083_CHAIN:filter:IPv4':
+firewallchain { 'LYRIS8081_CHAIN:filter:IPv4':
   ensure  => present,
 }
-firewall { '8083 lyris rule':
-  chain   => 'LYRIS8083_CHAIN',
+firewall { '8081 lyris rule':
+  chain   => 'LYRIS8081_CHAIN',
   action  => 'accept',
   proto   => 'tcp',
-  dport   => 8083,
+  dport   => 8081,
 }
 
 # MySQL Server Port
