@@ -9,14 +9,6 @@ class { '::mysql::server':
 	root_password => 'betanzos'
 }
 
-#mysql::db { 'mysql-server':
-#	user => 'lyris',
-#	password => 'lyris',
-#	host => 'localhost',
-#	grant => ['ALL'],
-#	sql => '/vagrant/puppet/resources/Company20150731.sql'
-#}
-
 include 'maven'
 
 exec { 'untarmule':

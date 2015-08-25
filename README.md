@@ -7,8 +7,6 @@ In order to install all components you need to download the following packages u
 wget https://developer.nrel.gov/downloads/api-umbrella/el/6/api-umbrella-0.8.0-1.el6.x86_64.rpm
 
 wget https://repository.mulesoft.org/nexus/content/repositories/releases/org/mule/distributions/mule-standalone/3.5.0/mule-standalone-3.5.0.tar.gz
-
-wget https://raw.githubusercontent.com/jbetanzos/mulesoft-sf-twitter-mysql-integration/master/src/main/resources/Company20150731.sql
 ```
 
 Look for the `api-umbrella.yml` file under `puppet/config/api-umbrella.yml`. Replace the value `your.email@example.com` for you own mail in order to log into the API Umbrella.
