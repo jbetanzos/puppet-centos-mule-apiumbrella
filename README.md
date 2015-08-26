@@ -62,7 +62,7 @@ Primary [x]
 Anonymous Rate Limit Behaviour: IP Only
 Authenticated Rate Limit Behaviour: All Limits
 ```
-Above configurations will monitor the API project AppSFTW35 by allowing 5 calls per minute by IP. In order to this changes take affect save the configuration and then go to *Configuration > Publish Changes*, check the demo configuration and *Publish*
+Above configurations will monitor the API project by allowing 5 calls per minute by IP. In order to this changes take affect save the configuration and then go to *Configuration > Publish Changes*, check the demo configuration and *Publish*
 
 Open a browser and test the API manager by calling more than 5 times the service `https://33.33.33.93/API/mailing_list.html?type=list&input=%3CDATASET%3E%20%20%3CSITE_ID%3E2010001045%3C%2FSITE_ID%3E%20%20%3CMLID%3E292401%3C%2FMLID%3E%20%20%3CDATA%20type%3D%22extra%22%20id%3D%22password%22%3EUus892jsoO%3C%2FDATA%3E%20%20%3CDATA%20type%3D%22list-id%22%3E11589%3C%2FDATA%3E%3C%2FDATASET%3E` you will get a text like this:
 ```
