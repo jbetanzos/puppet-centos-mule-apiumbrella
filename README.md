@@ -1,4 +1,5 @@
 # Vagrant Mule Mysql and API Umbrella
+###### If you are not familiar with vagrant check System Requirements section.
 
 This a vagrant configuration for a CentOS 6.5 machine with API Umbrella, Mule CE 3.5 Standalone, MySQL Server 5.1, JRE 1.7 and Maven 3.3
 
@@ -14,7 +15,7 @@ Look for the `api-umbrella.yml` file under `puppet/config/api-umbrella.yml`. Rep
 API Umbrella log-in is supported by different strategies. Since this is a local installation you will need to use Mozilla Persona.
 
 ## Mule Project Configuration
-In order to test the configuration you can download the [ASI-Demo](https://www.dropbox.com/s/3h9c01zhyqfcaog/asi-demo.zip?dl=0) application and place the zip file in `mule/apps/`.
+In order to test the configuration you can download the [ASI-Demo](https://dl.dropboxusercontent.com/u/77884581/apps/mule/asi-demo.zip) application and place the zip file in `mule/apps/`.
 
 The `mule/apps` directory is used on this configuration because is linked to the vagrant installation of mule. Each Mule Application that you put in this directory will be deployed. 
 
@@ -99,3 +100,24 @@ puppet module install maestrodev-maven
 puppet module install puppetlabs-firewall
 ```
 You can find this installation in [puppet/shell/init.sh](https://raw.githubusercontent.com/jbetanzos/puppet-centos-mule-apiumbrella/master/puppet/shell/init.sh)
+
+## System Requirements
+### VirtualBox installation
+Install VirtualBox from this [location](https://www.virtualbox.org/wiki/Downloads). Follow the installer instructions. 
+
+### Vagrant installation
+Install vagrant from this [site](http://www.vagrantup.com/downloads). Following the installer instruction. After you install Vagrant you will have the `vagrant` command available. 
+
+### Git installation
+Download and install Git from using this [link](https://git-scm.com/downloads). After you install Git you will have available the `git` command.
+
+### Basic Commands
+
+You will need to clone this repository by doing
+```
+$ git clone https://github.com/jbetanzos/puppet-centos-mule-apiumbrella.git
+```
+
+This will download the project into your local machine. Download the necessary files described in the first section of this document and then using your OS console (Terminal, Console Windows, Bash) enter the root directory of the cloned project and hit `vagrant up`.
+
+The `vagrant up` command will lunch and configure a vagrant box that contains all necessary configuration for you to continue wit the *mule configuration* section.
